@@ -8,12 +8,13 @@ use DateTimeImmutable;
 use PhpCfdi\XmlCancelacion\Capsules\CancellationAnswer;
 use PhpCfdi\XmlCancelacion\Definitions\CancelAnswer;
 use PhpCfdi\XmlCancelacion\Tests\TestCase;
+use PhpCfdi\XmlCancelacion\Definitions\Folio;
 
 class CancellationAnswerTest extends TestCase
 {
     public function testConstructAndExportToDocument(): void
     {
-        $uuid = '11111111-2222-3333-4444-000000000001';
+        $uuid = new Folio('11111111-2222-3333-4444-000000000001', '02');
         $rfc = 'LAN7008173R5';
         $answer = CancelAnswer::accept();
         $pacRfc = 'CVD110412TF6';

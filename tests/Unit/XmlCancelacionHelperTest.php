@@ -14,6 +14,7 @@ use PhpCfdi\XmlCancelacion\Signers\SignerInterface;
 use PhpCfdi\XmlCancelacion\Tests\TestCase;
 use PhpCfdi\XmlCancelacion\XmlCancelacionHelper;
 use PHPUnit\Framework\MockObject\MockObject;
+use PhpCfdi\XmlCancelacion\Definitions\Folio;
 
 /** @covers \PhpCfdi\XmlCancelacion\XmlCancelacionHelper */
 class XmlCancelacionHelperTest extends TestCase
@@ -97,7 +98,7 @@ class XmlCancelacionHelperTest extends TestCase
     public function testSignCancellationCallsSignCapsule(): void
     {
         $dateTime = new DateTimeImmutable();
-        $uuid = '11111111-2222-3333-4444-000000000001';
+        $uuid = new Folio('11111111-2222-3333-4444-000000000001', '02');
 
         $credentials = $this->createRealCredentials();
         $expectedCapsule = new Cancellation('LAN7008173R5', [$uuid], $dateTime);
@@ -114,7 +115,8 @@ class XmlCancelacionHelperTest extends TestCase
     {
         $credentials = $this->createRealCredentials();
         $rfc = $credentials->rfc();
-        $uuids = ['11111111-2222-3333-4444-000000000001', '11111111-2222-3333-4444-000000000002'];
+        $uuids = [new Folio('11111111-2222-3333-4444-000000000001', '02'),
+            new Folio('11111111-2222-3333-4444-000000000002', '02'), ];
         $helper = new XmlCancelacionHelperSpy();
 
         $now = new DateTimeImmutable();
@@ -126,7 +128,7 @@ class XmlCancelacionHelperTest extends TestCase
         $this->assertInstanceOf(Cancellation::class, $spyCapsule);
         $spyDate = $spyCapsule->date();
         $this->assertSame($rfc, $spyCapsule->rfc());
-        $this->assertSame($uuids, $spyCapsule->uuids());
+        $this->assertSame($uuids, $spyCapsule->folios());
         $this->assertTrue($spyDate > $now->modify('-1 second') && $spyDate < $now->modify('+1 second'));
     }
 
@@ -147,15 +149,15 @@ class XmlCancelacionHelperTest extends TestCase
     public function testSignCancellationCreatesCorrectCancellationParatemers(): void
     {
         $dateTime = new DateTimeImmutable('2020-01-13 14:15:16');
-        $uuid = '11111111-2222-3333-4444-000000000001';
+        $folio = new Folio('11111111-2222-3333-4444-000000000001', '02');
         $credentials = $this->createRealCredentials();
 
         $helper = new XmlCancelacionHelperSpy($credentials);
-        $helper->signCancellation($uuid, $dateTime);
+        $helper->signCancellation($folio, $dateTime);
 
         $cancellation = $helper->getLastCancellation();
         $this->assertSame($credentials->rfc(), $cancellation->rfc());
-        $this->assertSame([$uuid], $cancellation->uuids());
+        $this->assertSame([$folio], $cancellation->folios());
         $this->assertSame($dateTime, $cancellation->date());
         $this->assertTrue($cancellation->documentType()->isCfdi());
     }
@@ -163,7 +165,8 @@ class XmlCancelacionHelperTest extends TestCase
     public function testSignCancellationUuidsCreatesCorrectCancellationParatemers(): void
     {
         $dateTime = new DateTimeImmutable('2020-01-13 14:15:16');
-        $uuids = ['11111111-2222-3333-4444-000000000001', '11111111-2222-3333-4444-000000000002'];
+        $uuids = [new Folio('11111111-2222-3333-4444-000000000001', '02'),
+            new Folio('11111111-2222-3333-4444-000000000002', '02'), ];
         $credentials = $this->createRealCredentials();
 
         $helper = new XmlCancelacionHelperSpy($credentials);
@@ -171,7 +174,7 @@ class XmlCancelacionHelperTest extends TestCase
 
         $cancellation = $helper->getLastCancellation();
         $this->assertSame($credentials->rfc(), $cancellation->rfc());
-        $this->assertSame($uuids, $cancellation->uuids());
+        $this->assertSame($uuids, $cancellation->folios());
         $this->assertSame($dateTime, $cancellation->date());
         $this->assertTrue($cancellation->documentType()->isCfdi());
     }
@@ -179,7 +182,7 @@ class XmlCancelacionHelperTest extends TestCase
     public function testSignRetentionCancellationCreatesCorrectCancellationParatemers(): void
     {
         $dateTime = new DateTimeImmutable('2020-01-13 14:15:16');
-        $uuid = '11111111-2222-3333-4444-000000000001';
+        $uuid = new Folio('11111111-2222-3333-4444-000000000001', '02');
         $credentials = $this->createRealCredentials();
 
         $helper = new XmlCancelacionHelperSpy($credentials);
@@ -187,7 +190,7 @@ class XmlCancelacionHelperTest extends TestCase
 
         $cancellation = $helper->getLastCancellation();
         $this->assertSame($credentials->rfc(), $cancellation->rfc());
-        $this->assertSame([$uuid], $cancellation->uuids());
+        $this->assertSame([$uuid], $cancellation->folios());
         $this->assertSame($dateTime, $cancellation->date());
         $this->assertTrue($cancellation->documentType()->isRetention());
     }
@@ -195,7 +198,8 @@ class XmlCancelacionHelperTest extends TestCase
     public function testSignRetentionCancellationUuidsCreatesCorrectCancellationParatemers(): void
     {
         $dateTime = new DateTimeImmutable('2020-01-13 14:15:16');
-        $uuids = ['11111111-2222-3333-4444-000000000001', '11111111-2222-3333-4444-000000000002'];
+        $uuids = [new Folio('11111111-2222-3333-4444-000000000001', '02'),
+            new Folio('11111111-2222-3333-4444-000000000002', '02'), ];
         $credentials = $this->createRealCredentials();
 
         $helper = new XmlCancelacionHelperSpy($credentials);
@@ -203,7 +207,7 @@ class XmlCancelacionHelperTest extends TestCase
 
         $cancellation = $helper->getLastCancellation();
         $this->assertSame($credentials->rfc(), $cancellation->rfc());
-        $this->assertSame($uuids, $cancellation->uuids());
+        $this->assertSame($uuids, $cancellation->folios());
         $this->assertSame($dateTime, $cancellation->date());
         $this->assertTrue($cancellation->documentType()->isRetention());
     }

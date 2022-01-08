@@ -9,6 +9,7 @@ use PhpCfdi\XmlCancelacion\Capsules\Cancellation;
 use PhpCfdi\XmlCancelacion\Credentials;
 use PhpCfdi\XmlCancelacion\Signers\DOMSigner;
 use PhpCfdi\XmlCancelacion\Tests\TestCase;
+use PhpCfdi\XmlCancelacion\Definitions\Folio;
 
 class XmlSignedUsingDOMSignerTest extends TestCase
 {
@@ -25,9 +26,10 @@ class XmlSignedUsingDOMSignerTest extends TestCase
             trim($this->fileContents('LAN7008173R5.password'))
         );
 
+        $f = new Folio('E174F807-BEFA-4CF6-9B11-2A013B12F398', '02');
         $capsule = new Cancellation(
             'LAN7008173R5',
-            ['E174F807-BEFA-4CF6-9B11-2A013B12F398'],
+            [$f],
             new DateTimeImmutable('2019-04-05T16:29:17')
         );
 
@@ -47,10 +49,10 @@ class XmlSignedUsingDOMSignerTest extends TestCase
             . ' xmlns:xsd="http://www.w3.org/2001/XMLSchema"'
             . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
             . ' Fecha="2019-04-05T16:29:17" RfcEmisor="LAN7008173R5">'
-            . '<Folios><UUID>E174F807-BEFA-4CF6-9B11-2A013B12F398</UUID></Folios>'
+            . '<Folios><Folio Motivo="02" UUID="E174F807-BEFA-4CF6-9B11-2A013B12F398"></Folio></Folios>'
             . '</Cancelacion>';
 
-        $expectedDigestValue = 'j2x4spEq57R1mQD9lwXh2mmOyK8=';
+        $expectedDigestValue = 'YBtGnfi2aq9RXXOWt5dtZpYOidg=';
 
         // signed info text for preset capsule *must* be the following, see not used xmlns declarations and C14N
         /** @noinspection XmlUnusedNamespaceDeclaration */
@@ -65,14 +67,14 @@ class XmlSignedUsingDOMSignerTest extends TestCase
             . '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>'
             . '</Transforms>'
             . '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>'
-            . '<DigestValue>j2x4spEq57R1mQD9lwXh2mmOyK8=</DigestValue>'
+            . '<DigestValue>YBtGnfi2aq9RXXOWt5dtZpYOidg=</DigestValue>'
             . '</Reference>'
             . '</SignedInfo>';
 
-        $expectedSignedValue = 'e0Cyi/rXOTFwW8ckNnwQEQ1oC6m73PDvExunnniCsZWQrDRV2SiaH9NoAhJhb5W9p5vJgB+PWu4J6uchG7Ei'
-            . 'kDPbDPw19K3B7uZKTH7tZLffV/bZx6rozzreInvP+S1HhrnOqLPwebBm3Q3yRQk3pbaW2sHFPPuRPLqP+1h3Fegv4GEnwy+0G7LRg'
-            . '3H05v6fDXvONgikCrC2sdzA0kM6qvrOpGfbgBd4au7eFFRjCA4oX9zcQUG9E4m+uVovj0ebp4EqDn9SC+Az3fi5AHom6adju8wx4u'
-            . 'Jvi8isVg8ZP9KcuqEfXhIkyFutJrD61l00+XyZe4n5T1Aya+Ta0Q6NrA==';
+        $expectedSignedValue = 'V+eTCjmr1aoLAwS4GdV0KI2LRb9MUYm1qT4ZA/XSFol269xNFl/U9xGWZbS/3CNDv+MmPQZ8XnOXuyd+fQOY'
+            . 'Ra4VlBO14jkSfw7h8JoBsEQhvpOna2aRFiIGR35VXUmdg9BT+L94whbbMOTw584zOSbYr8ozU3oxa5CoMnjbA7OfzN+JZmWp8rQUwRT'
+            . 'yQK4SEqUlcc4iTXJYxeIEqjCzQonZT9FoHW2PKoCWwBpx40KimSrPXeSRBk06/+J1ILn0HIGlMtkOVtWW87cyEhPEQzWUxsSttnz9wq'
+            . 'i+YFV5nfQ6aYlFdQZaQ4H1FV66exiUXZE20nh4GJ2RI5P11JxiyA==';
 
         $this->assertSame($expectedDigestSource, $this->domSigner->getDigestSource());
         $this->assertSame($expectedDigestValue, $this->domSigner->getDigestValue());

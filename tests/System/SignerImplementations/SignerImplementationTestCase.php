@@ -20,6 +20,7 @@ use PhpCfdi\XmlCancelacion\XmlCancelacionHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use RobRichards\XMLSecLibs\XMLSecEnc;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
+use PhpCfdi\XmlCancelacion\Definitions\Folio;
 
 abstract class SignerImplementationTestCase extends TestCase
 {
@@ -64,8 +65,9 @@ abstract class SignerImplementationTestCase extends TestCase
     public function testCancellation(): void
     {
         $helper = $this->createHelper();
+        $f = new Folio('E174F807-BEFA-4CF6-9B11-2A013B12F398', '02');
         $signature = $helper->signCancellation(
-            'E174F807-BEFA-4CF6-9B11-2A013B12F398',
+            $f,
             new DateTimeImmutable('2019-04-05 16:29:17')
         );
         $expectedXml = $this->xmlWithoutWhitespace($this->fileContents('cancellation-signed.xml'));

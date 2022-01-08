@@ -13,6 +13,7 @@ use PhpCfdi\XmlCancelacion\Signers\DOMSigner;
 use PhpCfdi\XmlCancelacion\Signers\XmlSecLibsSigner;
 use PhpCfdi\XmlCancelacion\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PhpCfdi\XmlCancelacion\Definitions\Folio;
 
 /** @covers \PhpCfdi\XmlCancelacion\Signers\XmlSecLibsSigner */
 class XmlSecLibsSignerTest extends TestCase
@@ -25,7 +26,7 @@ class XmlSecLibsSignerTest extends TestCase
         $credentials = new Credentials($cerContent, $keyContent, $passPhrase);
         $capsule = new Cancellation(
             'LAN7008173R5',
-            ['11111111-2222-3333-4444-000000000001'],
+            [ new Folio('11111111-2222-3333-4444-000000000001', '02')],
             new DateTimeImmutable('2019-01-13T14:15:16-06:00')
         );
 
@@ -52,7 +53,7 @@ class XmlSecLibsSignerTest extends TestCase
         $signer->method('signDocumentInternal')->willThrowException(new Exception('dummy'));
         $capsule = new Cancellation(
             'LAN7008173R5',
-            ['11111111-2222-3333-4444-000000000001'],
+            [new Folio('11111111-2222-3333-4444-000000000001', '02')],
             new DateTimeImmutable('2019-01-13T14:15:16-06:00')
         );
         $this->expectException(LogicException::class);

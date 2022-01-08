@@ -2,7 +2,7 @@
 <Cancelacion xmlns="http://cancelacfd.sat.gob.mx" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              RfcEmisor="LAN7008173R5" Fecha="2019-04-05T16:29:17">
     <Folios>
-        <UUID>E174F807-BEFA-4CF6-9B11-2A013B12F398</UUID>
+        <Folio UUID="E174F807-BEFA-4CF6-9B11-2A013B12F398" Motivo="02"/>
     </Folios>
     <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
         <SignedInfo>
@@ -13,10 +13,10 @@
                     <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
                 </Transforms>
                 <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-                <DigestValue>j2x4spEq57R1mQD9lwXh2mmOyK8=</DigestValue>
+                <DigestValue>YBtGnfi2aq9RXXOWt5dtZpYOidg=</DigestValue>
             </Reference>
         </SignedInfo>
-        <SignatureValue>e0Cyi/rXOTFwW8ckNnwQEQ1oC6m73PDvExunnniCsZWQrDRV2SiaH9NoAhJhb5W9p5vJgB+PWu4J6uchG7EikDPbDPw19K3B7uZKTH7tZLffV/bZx6rozzreInvP+S1HhrnOqLPwebBm3Q3yRQk3pbaW2sHFPPuRPLqP+1h3Fegv4GEnwy+0G7LRg3H05v6fDXvONgikCrC2sdzA0kM6qvrOpGfbgBd4au7eFFRjCA4oX9zcQUG9E4m+uVovj0ebp4EqDn9SC+Az3fi5AHom6adju8wx4uJvi8isVg8ZP9KcuqEfXhIkyFutJrD61l00+XyZe4n5T1Aya+Ta0Q6NrA==</SignatureValue>
+        <SignatureValue>V+eTCjmr1aoLAwS4GdV0KI2LRb9MUYm1qT4ZA/XSFol269xNFl/U9xGWZbS/3CNDv+MmPQZ8XnOXuyd+fQOYRa4VlBO14jkSfw7h8JoBsEQhvpOna2aRFiIGR35VXUmdg9BT+L94whbbMOTw584zOSbYr8ozU3oxa5CoMnjbA7OfzN+JZmWp8rQUwRTyQK4SEqUlcc4iTXJYxeIEqjCzQonZT9FoHW2PKoCWwBpx40KimSrPXeSRBk06/+J1ILn0HIGlMtkOVtWW87cyEhPEQzWUxsSttnz9wqi+YFV5nfQ6aYlFdQZaQ4H1FV66exiUXZE20nh4GJ2RI5P11JxiyA==</SignatureValue>
         <KeyInfo>
             <X509Data>
                 <X509IssuerSerial>
